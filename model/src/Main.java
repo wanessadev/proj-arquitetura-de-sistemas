@@ -1,7 +1,10 @@
 import controller.ProdutoController;
+import factory.ProdutoFactory;
 import model.Produto;
 import repository.ProdutoRepository;
 import service.ProdutoService;
+import strategy.PrecoPromocionalStrategy;
+import strategy.PrecoStrategy;
 
 public class Main {
 
@@ -11,20 +14,27 @@ public class Main {
         ProdutoRepository repository = new ProdutoRepository();
         ProdutoService service = new ProdutoService(repository);
         ProdutoController controller = new ProdutoController(service);
+        ProdutoFactory factory = new ProdutoFactory();
 
         // ==============================
         // CREATE - Cadastrar produto
         // ==============================
 
-        Produto produto1 = new Produto(
+        Produto produto = factory.criarProduto(
                 1,
                 "Bolo de Cenoura",
                 "Bolo",
                 "Cenoura com Chocolate",
-                45.00
+                50.00
         );
 
-        boolean cadastrado = controller.cadastrarProduto(produto1);
+        PrecoStrategy estrategia = new PrecoPromocionalStrategy(0.10);
+
+        double precoFinal = produto.calcularPreco(estrategia);
+
+        System.out.println("Preço promocional: R$ " + precoFinal);
+
+        boolean cadastrado = controller.cadastrarProduto(produto);
 
         if (cadastrado) {
             System.out.println("Produto cadastrado com sucesso!");
@@ -32,17 +42,15 @@ public class Main {
             System.out.println("Não foi possível cadastrar o produto.");
         }
 
-
         // ==============================
         // READ - Listar produtos
         // ==============================
 
         System.out.println("\n=== PRODUTOS CADASTRADOS ===");
 
-        for (Produto produto : controller.listarProdutos()) {
-            System.out.println(produto);
+        for (Produto p : controller.listarProdutos()) {
+            System.out.println(p);
         }
-
 
         // ==============================
         // READ - Buscar produto
@@ -59,16 +67,15 @@ public class Main {
             System.out.println("Produto não encontrado.");
         }
 
-
         // ==============================
         // UPDATE - Atualizar produto
         // ==============================
 
-        Produto produtoAtualizado = new Produto(
+        Produto produtoAtualizado = factory.criarProduto(
                 1,
                 "Bolo de Cenoura",
-                "Cenoura com Chocolate",
                 "Bolo",
+                "Cenoura com Chocolate",
                 50.00
         );
 
@@ -80,7 +87,6 @@ public class Main {
             System.out.println("\nNão foi possível atualizar o produto.");
         }
 
-
         // ==============================
         // READ - Verificar atualização
         // ==============================
@@ -91,7 +97,6 @@ public class Main {
                 controller.buscarProduto(1);
 
         System.out.println(produtoDepoisDaAtualizacao);
-
 
         // ==============================
         // DELETE - Excluir produto
@@ -105,7 +110,6 @@ public class Main {
             System.out.println("\nNão foi possível excluir o produto.");
         }
 
-
         // ==============================
         // READ - Verificar exclusão
         // ==============================
@@ -115,8 +119,8 @@ public class Main {
         if (controller.listarProdutos().isEmpty()) {
             System.out.println("Nenhum produto cadastrado.");
         } else {
-            for (Produto produto : controller.listarProdutos()) {
-                System.out.println(produto);
+            for (Produto p : controller.listarProdutos()) {
+                System.out.println(p);
             }
         }
     }

@@ -16,11 +16,7 @@ public class ProdutoService {
     // CREATE
     public boolean adicionar(Produto produto) {
 
-        if (produto.getNome() == null || produto.getNome().isBlank()) {
-            return false;
-        }
-
-        if (produto.getPreco() <= 0) {
+        if (!produto.dadosValidos()) {
             return false;
         }
 
@@ -45,11 +41,7 @@ public class ProdutoService {
     // UPDATE
     public boolean atualizar(Produto produto) {
 
-        if (produto.getNome() == null || produto.getNome().isBlank()) {
-            return false;
-        }
-
-        if (produto.getPreco() <= 0) {
+        if (!produto.dadosValidos()) {
             return false;
         }
 

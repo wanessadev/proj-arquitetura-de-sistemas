@@ -1,4 +1,5 @@
 package model;
+import strategy.PrecoStrategy;
 
 public class Produto {
 
@@ -50,6 +51,10 @@ public class Produto {
 
     public void setPreco(double preco) {
         this.preco = preco;
+    }
+
+    public double calcularPreco(PrecoStrategy strategy) {
+        return strategy.calcularPreco(preco);
     }
 
     // GRASP Information Expert
