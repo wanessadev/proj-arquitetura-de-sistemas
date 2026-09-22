@@ -1,0 +1,11 @@
+# Binários compilados
+*.class
+out/
+model/out/
+
+# Arquivos de configuração de IDE (IntelliJ IDEA)
+.idea/
+*.iml
+
+# Utilitário local para visualização/impressão do PDF
+DOCUMENTO_DESCRICAO_SISTEMA.html
