@@ -191,14 +191,17 @@ Em estrito atendimento ao critério da disciplina (*mínimo de 2 padrões GRASP 
 O código está estruturado em pacotes coesos:
 
 ```
-model/src/
+```text
+src/
 ├── Main.java                          # Interface de console, menu interativo e modo demo
 ├── model/
 │   ├── Produto.java                   # Entidade de Produto (Information Expert)
-│   └── Cliente.java                   # Entidade de Cliente (Information Expert)
+│   ├── Cliente.java                   # Entidade de Cliente (Information Expert)
+│   └── Ingrediente.java               # Entidade de Ingrediente (Information Expert)
 ├── factory/
 │   ├── ProdutoFactory.java            # GoF Factory para Produto
-│   └── ClienteFactory.java            # GoF Factory para Cliente
+│   ├── ClienteFactory.java            # GoF Factory para Cliente
+│   └── IngredienteFactory.java        # GoF Factory para Ingrediente
 ├── strategy/
 │   ├── PrecoStrategy.java             # GoF Strategy de preços
 │   ├── PrecoNormalStrategy.java       # Estratégia concreta
@@ -208,13 +211,16 @@ model/src/
 │   └── ClienteFidelidadeStrategy.java # Estratégia concreta com fidelidade
 ├── repository/
 │   ├── ProdutoRepository.java         # Persistência em memória (CRUD Produto)
-│   └── ClienteRepository.java         # Persistência em memória (CRUD Cliente)
+│   ├── ClienteRepository.java         # Persistência em memória (CRUD Cliente)
+│   └── IngredienteRepository.java     # Persistência em memória (CRUD Ingrediente)
 ├── service/
 │   ├── ProdutoService.java            # Regras de negócio de Produtos (RN01-RN03)
-│   └── ClienteService.java            # Regras de negócio de Clientes (RN04-RN06)
+│   ├── ClienteService.java            # Regras de negócio de Clientes (RN04-RN06)
+│   └── IngredienteService.java        # Regras de negócio de Ingredientes (RN07-RN09)
 └── controller/
     ├── ProdutoController.java         # GRASP Controller de Produtos
-    └── ClienteController.java         # GRASP Controller de Clientes
+    ├── ClienteController.java         # GRASP Controller de Clientes
+    └── IngredienteController.java     # GRASP Controller de Ingredientes
 ```
 
 ---
