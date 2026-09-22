@@ -1,15 +1,22 @@
 import controller.ClienteController;
+import controller.IngredienteController;
 import controller.ProdutoController;
 import factory.ClienteFactory;
+import factory.IngredienteFactory;
 import factory.ProdutoFactory;
 import model.Cliente;
+import model.Ingrediente;
 import model.Produto;
 import repository.ClienteRepository;
+import repository.IngredienteRepository;
 import repository.ProdutoRepository;
 import service.ClienteService;
+import service.IngredienteService;
 import service.ProdutoService;
+import strategy.AlertaEstoqueMinimoStrategy;
 import strategy.ClienteComumStrategy;
 import strategy.ClienteFidelidadeStrategy;
+import strategy.EstoqueStrategy;
 import strategy.PrecoNormalStrategy;
 import strategy.PrecoPromocionalStrategy;
 import strategy.PrecoStrategy;
@@ -21,8 +28,12 @@ public class Main {
 
     private static ProdutoController produtoController;
     private static ClienteController clienteController;
+    private static IngredienteController ingredienteController;
+
     private static ProdutoFactory produtoFactory;
     private static ClienteFactory clienteFactory;
+    private static IngredienteFactory ingredienteFactory;
+
     private static Scanner scanner;
 
     public static void main(String[] args) {
@@ -36,6 +47,11 @@ public class Main {
         ClienteService clienteService = new ClienteService(clienteRepository);
         clienteController = new ClienteController(clienteService);
         clienteFactory = new ClienteFactory();
+
+        IngredienteRepository ingredienteRepository = new IngredienteRepository();
+        IngredienteService ingredienteService = new IngredienteService(ingredienteRepository);
+        ingredienteController = new IngredienteController(ingredienteService);
+        ingredienteFactory = new IngredienteFactory();
 
         scanner = new Scanner(System.in);
 
@@ -66,6 +82,9 @@ public class Main {
                     menuClientes();
                     break;
                 case 3:
+                    menuIngredientes();
+                    break;
+                case 4:
                     executarDemonstracaoCompleta();
                     break;
                 case 0:
@@ -84,13 +103,14 @@ public class Main {
         System.out.println("+-------------------------------------+");
         System.out.println("| 1. Gerenciar Produtos               |");
         System.out.println("| 2. Gerenciar Clientes               |");
-        System.out.println("| 3. Executar Demonstracao Completa   |");
+        System.out.println("| 3. Gerenciar Ingredientes           |");
+        System.out.println("| 4. Executar Demonstracao Completa   |");
         System.out.println("| 0. Sair                             |");
         System.out.println("+-------------------------------------+");
     }
 
     // ==========================================================
-    // MENU GERENCIAR PRODUTOS (CRUD + GoF Strategy)
+    // 1. MENU GERENCIAR PRODUTOS (CRUD + GoF Strategy)
     // ==========================================================
     private static void menuProdutos() {
         int op = -1;
@@ -251,7 +271,7 @@ public class Main {
     }
 
     // ==========================================================
-    // MENU GERENCIAR CLIENTES (CRUD + GoF Strategy)
+    // 2. MENU GERENCIAR CLIENTES (CRUD + GoF Strategy)
     // ==========================================================
     private static void menuClientes() {
         int op = -1;
@@ -410,6 +430,152 @@ public class Main {
     }
 
     // ==========================================================
+    // 3. MENU GERENCIAR INGREDIENTES (CRUD + GoF Strategy)
+    // ==========================================================
+    private static void menuIngredientes() {
+        int op = -1;
+        while (op != 0) {
+            System.out.println("\n--- [ GERENCIAR INGREDIENTES ] ---");
+            System.out.println("1. Cadastrar Ingrediente (CREATE)");
+            System.out.println("2. Listar Ingredientes (READ)");
+            System.out.println("3. Buscar Ingrediente por ID (READ)");
+            System.out.println("4. Atualizar Ingrediente (UPDATE)");
+            System.out.println("5. Excluir Ingrediente (DELETE)");
+            System.out.println("6. Avaliar Nível de Estoque (GoF Strategy)");
+            System.out.println("0. Voltar ao Menu Principal");
+            System.out.print("Escolha uma opção: ");
+
+            try {
+                op = Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Opção inválida.");
+                continue;
+            }
+
+            switch (op) {
+                case 1:
+                    cadastrarIngredienteConsole();
+                    break;
+                case 2:
+                    listarIngredientesConsole();
+                    break;
+                case 3:
+                    buscarIngredienteConsole();
+                    break;
+                case 4:
+                    atualizarIngredienteConsole();
+                    break;
+                case 5:
+                    excluirIngredienteConsole();
+                    break;
+                case 6:
+                    avaliarEstoqueConsole();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Opção inválida.");
+            }
+        }
+    }
+
+    private static void cadastrarIngredienteConsole() {
+        System.out.println("\n-- Cadastrar Ingrediente --");
+        try {
+            System.out.print("Nome: ");
+            String nome = scanner.nextLine().trim();
+            System.out.print("Categoria (ex: Secos, Laticínios): ");
+            String categoria = scanner.nextLine().trim();
+            System.out.print("Quantidade (ex: 15.5): ");
+            double quantidade = Double.parseDouble(scanner.nextLine().trim().replace(",", "."));
+            System.out.print("Unidade de Medida (ex: kg, g, l, un): ");
+            String unidade = scanner.nextLine().trim();
+
+            Ingrediente criado = ingredienteController.cadastrarIngrediente(nome, categoria, quantidade, unidade);
+            System.out.println(" Ingrediente cadastrado com sucesso! ID gerado: " + criado.getId());
+        } catch (Exception e) {
+            System.out.println(" Falha ao cadastrar: " + e.getMessage());
+        }
+    }
+
+    private static void listarIngredientesConsole() {
+        System.out.println("\n-- Lista de Ingredientes no Estoque --");
+        List<Ingrediente> lista = ingredienteController.listarIngredientes();
+        if (lista.isEmpty()) {
+            System.out.println("Nenhum ingrediente cadastrado.");
+        } else {
+            for (Ingrediente i : lista) {
+                System.out.println(i);
+            }
+        }
+    }
+
+    private static void buscarIngredienteConsole() {
+        System.out.print("\nDigite o ID do ingrediente: ");
+        try {
+            Long id = Long.parseLong(scanner.nextLine().trim());
+            Ingrediente i = ingredienteController.buscarIngrediente(id);
+            System.out.println("Ingrediente encontrado: " + i);
+        } catch (Exception e) {
+            System.out.println("Falha na busca: " + e.getMessage());
+        }
+    }
+
+    private static void atualizarIngredienteConsole() {
+        System.out.println("\n-- Atualizar Ingrediente --");
+        try {
+            System.out.print("ID do ingrediente a atualizar: ");
+            Long id = Long.parseLong(scanner.nextLine().trim());
+            System.out.print("Novo Nome: ");
+            String nome = scanner.nextLine().trim();
+            System.out.print("Nova Categoria: ");
+            String categoria = scanner.nextLine().trim();
+            System.out.print("Nova Quantidade: ");
+            double quantidade = Double.parseDouble(scanner.nextLine().trim().replace(",", "."));
+            System.out.print("Nova Unidade de Medida: ");
+            String unidade = scanner.nextLine().trim();
+
+            Ingrediente atualizado = ingredienteFactory.criarIngrediente(id, nome, categoria, quantidade, unidade);
+            if (ingredienteController.atualizarIngrediente(atualizado)) {
+                System.out.println(" Ingrediente atualizado com sucesso!");
+            } else {
+                System.out.println(" Ingrediente com ID " + id + " não encontrado.");
+            }
+        } catch (Exception e) {
+            System.out.println(" Dados inválidos: " + e.getMessage());
+        }
+    }
+
+    private static void excluirIngredienteConsole() {
+        System.out.print("\nDigite o ID do ingrediente a excluir: ");
+        try {
+            Long id = Long.parseLong(scanner.nextLine().trim());
+            if (ingredienteController.excluirIngrediente(id)) {
+                System.out.println(" Ingrediente excluído com sucesso!");
+            } else {
+                System.out.println(" Ingrediente com ID " + id + " não encontrado.");
+            }
+        } catch (Exception e) {
+            System.out.println("ID inválido.");
+        }
+    }
+
+    private static void avaliarEstoqueConsole() {
+        System.out.print("\nDigite o ID do ingrediente: ");
+        try {
+            Long id = Long.parseLong(scanner.nextLine().trim());
+            Ingrediente i = ingredienteController.buscarIngrediente(id);
+            System.out.print("Defina a quantidade de corte para estoque mínimo (ex: 5.0): ");
+            double limite = Double.parseDouble(scanner.nextLine().trim().replace(",", "."));
+            EstoqueStrategy strategy = new AlertaEstoqueMinimoStrategy(limite);
+            String status = i.verificarStatusEstoque(strategy);
+            System.out.println("Status da avaliação (GoF Strategy): " + status);
+        } catch (Exception e) {
+            System.out.println("Erro na avaliação: " + e.getMessage());
+        }
+    }
+
+    // ==========================================================
     // DEMONSTRAÇÃO COMPLETA AUTOMATIZADA (Ideal para Prints do AVA)
     // ==========================================================
     public static void executarDemonstracaoCompleta() {
@@ -420,10 +586,10 @@ public class Main {
         // --------------------------------------------------
         // 1. CADASTRO DE PRODUTOS
         // --------------------------------------------------
-        System.out.println("\n--- [1] DEMONSTRAÇÃO DO CRUD DE PRODUTOS ---");
+        System.out.println("\n--- [1] DEMONSTRACAO DO CRUD DE PRODUTOS ---");
 
         // CREATE
-        System.out.println("\n[CREATE] Cadastrando produto com ProdutoFactory (GoF Factory)...");
+        System.out.println("\n[CREATE] Cadastrando produtos com ProdutoFactory (GoF Factory)...");
         Produto produto1 = produtoFactory.criarProduto(1, "Bolo de Cenoura", "Bolo", "Cenoura com Chocolate", 45.00);
         Produto produto2 = produtoFactory.criarProduto(2, "Torta de Limão", "Torta", "Limão Siciliano", 35.00);
         produtoController.cadastrarProduto(produto1);
@@ -463,7 +629,7 @@ public class Main {
         // --------------------------------------------------
         // 2. CADASTRO DE CLIENTES
         // --------------------------------------------------
-        System.out.println("\n--- [2] DEMONSTRAÇÃO DO CRUD DE CLIENTES ---");
+        System.out.println("\n--- [2] DEMONSTRACAO DO CRUD DE CLIENTES ---");
 
         // CREATE
         System.out.println("\n[CREATE] Cadastrando clientes com ClienteFactory (GoF Factory)...");
@@ -505,8 +671,52 @@ public class Main {
             System.out.println("  " + c);
         }
 
+        // --------------------------------------------------
+        // 3. CADASTRO DE INGREDIENTES
+        // --------------------------------------------------
+        System.out.println("\n--- [3] DEMONSTRACAO DO CRUD DE INGREDIENTES ---");
+
+        // CREATE
+        System.out.println("\n[CREATE] Cadastrando ingredientes com IngredienteFactory (GoF Factory)...");
+        Ingrediente ing1 = ingredienteFactory.criarIngrediente(null, "Farinha de Trigo", "Secos", 25.0, "kg");
+        Ingrediente ing2 = ingredienteFactory.criarIngrediente(null, "Cacau em Pó 100%", "Chocolates", 2.5, "kg");
+        ingredienteController.cadastrarIngrediente(ing1);
+        ingredienteController.cadastrarIngrediente(ing2);
+        System.out.println("Ingredientes cadastrados com sucesso!");
+
+        // GoF Strategy - Alerta de Estoque Mínimo
+        System.out.println("\n[GoF Strategy] Avaliando estoque com AlertaEstoqueMinimoStrategy (limite: 5.0 kg):");
+        EstoqueStrategy alertaStrategy = new AlertaEstoqueMinimoStrategy(5.0);
+        System.out.println("  Farinha de Trigo: " + ing1.verificarStatusEstoque(alertaStrategy));
+        System.out.println("  Cacau em Pó:      " + ing2.verificarStatusEstoque(alertaStrategy));
+
+        // READ - Listar
+        System.out.println("\n[READ] Listando todos os ingredientes cadastrados:");
+        for (Ingrediente ing : ingredienteController.listarIngredientes()) {
+            System.out.println("  " + ing);
+        }
+
+        // READ - Buscar
+        System.out.println("\n[READ] Buscando ingrediente pelo ID 1:");
+        Ingrediente ingBuscado = ingredienteController.buscarIngrediente(1L);
+        System.out.println("  Resultado: " + ingBuscado);
+
+        // UPDATE
+        System.out.println("\n[UPDATE] Atualizando quantidade da Farinha de Trigo para 30.0 kg:");
+        Ingrediente ingAtualizado = ingredienteFactory.criarIngrediente(1L, "Farinha de Trigo Especial", "Secos", 30.0, "kg");
+        ingredienteController.atualizarIngrediente(ingAtualizado);
+        System.out.println("  Após atualização: " + ingredienteController.buscarIngrediente(1L));
+
+        // DELETE
+        System.out.println("\n[DELETE] Excluindo ingrediente de ID 2 (Cacau em Pó)...");
+        ingredienteController.excluirIngrediente(2L);
+        System.out.println("  Lista após exclusão do ingrediente 2:");
+        for (Ingrediente ing : ingredienteController.listarIngredientes()) {
+            System.out.println("  " + ing);
+        }
+
         System.out.println("\n=======================================================");
-        System.out.println("    DEMONSTRAÇÃO CONCLUÍDA COM SUCESSO!                ");
+        System.out.println("    DEMONSTRACAO CONCLUIDA COM SUCESSO!                ");
         System.out.println("=======================================================\n");
     }
 }
