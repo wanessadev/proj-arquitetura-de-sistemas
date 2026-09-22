@@ -1,9 +1,11 @@
 # DOCUMENTO DE DESCRIÇÃO DO SISTEMA
+
 ## Projeto 1 — Projeto e Arquitetura de Sistemas (AV1)
-**Universidade de Fortaleza (UNIFOR)**  
-**Docente:** Prof. Américo Sampaio  
-**Equipe:** Wanessa Vieira & Luís Guilherme  
-**Sistema:** Doces Tia Bita — Sistema de Gerenciamento  
+
+**Universidade de Fortaleza (UNIFOR)**
+**Docente:** Prof. Américo Sampaio
+**Equipe:** Wanessa Vieira & Luís Guilherme
+**Sistema:** Doces Tia Bita — Sistema de Gerenciamento
 **Repositório GitHub:** `proj-arquitetura-de-sistemas`
 
 ---
@@ -20,8 +22,7 @@ Com uma interface direta e orientada a menus, o sistema permite realizar todo o 
 
 Para atender ao escopo acadêmico sem complexidade desnecessária de controle de acesso, o sistema foi desenhado com um perfil de usuário unificado:
 
-- **Administrador / Gerente da Confeitaria:**  
-  Usuário responsável por todas as operações administrativas da loja, incluindo:
+- **Administrador / Gerente da Confeitaria:**Usuário responsável por todas as operações administrativas da loja, incluindo:
   - Cadastro, alteração, consulta e exclusão de produtos do cardápio;
   - Definição e consulta de preços promocionais;
   - Cadastro, manutenção, consulta e remoção de clientes da confeitaria;
@@ -34,7 +35,9 @@ Para atender ao escopo acadêmico sem complexidade desnecessária de controle de
 Conforme a exigência para equipes em dupla, o sistema implementa integralmente **2 cadastros**:
 
 ### 3.1. Cadastro 1: Produtos
+
 Permite manter o catálogo de doces e sobremesas da confeitaria.
+
 - **Atributos:**
   - `id` (Identificador numérico único)
   - `nome` (Nome comercial do produto, ex: *Bolo de Cenoura*)
@@ -49,7 +52,9 @@ Permite manter o catálogo de doces e sobremesas da confeitaria.
   - **Cálculo Estratégico de Preço:** Aplicação de descontos promocionais via Strategy.
 
 ### 3.2. Cadastro 2: Clientes
+
 Permite o gerenciamento dos clientes para contato e programas de fidelização.
+
 - **Atributos:**
   - `id` (Identificador numérico único)
   - `nome` (Nome completo do cliente)
@@ -67,6 +72,7 @@ Permite o gerenciamento dos clientes para contato e programas de fidelização.
 ## 4. Requisitos Funcionais e Regras de Negócio
 
 ### 4.1. Requisitos Funcionais (RF)
+
 - **RF01:** O sistema deve permitir cadastrar um produto.
 - **RF02:** O sistema deve permitir listar todos os produtos cadastrados.
 - **RF03:** O sistema deve permitir buscar um produto pelo seu ID.
@@ -79,6 +85,7 @@ Permite o gerenciamento dos clientes para contato e programas de fidelização.
 - **RF10:** O sistema deve permitir excluir um cliente por ID.
 
 ### 4.2. Regras de Negócio (RN)
+
 - **RN01:** Cada produto deve possuir um ID único no sistema.
 - **RN02:** O nome do produto não pode ser nulo ou vazio.
 - **RN03:** O preço do produto deve ser estritamente maior que zero.
@@ -95,6 +102,7 @@ Em estrito atendimento ao critério da disciplina (*mínimo de 2 padrões GRASP 
 ### 5.1. Padrões no Cadastro de Produtos
 
 #### Padrões GRASP:
+
 1. **Controller (`ProdutoController`):**
    - **Justificativa:** Atua como o primeiro objeto além da camada de interface (Console/Main) a receber e coordenar as mensagens de operação do sistema. Não executa regras de negócio diretamente; delega as solicitações para o `ProdutoService`, desacoplando a UI do domínio.
 2. **Information Expert (`Produto.dadosValidos()`):**
@@ -103,6 +111,7 @@ Em estrito atendimento ao critério da disciplina (*mínimo de 2 padrões GRASP 
    - Separação em camadas bem delimitadas: `ProdutoRepository` (persistência em memória), `ProdutoService` (validações e regras de negócio) e `ProdutoController` (orquestração).
 
 #### Padrões GoF:
+
 1. **Simple Factory / Factory (`ProdutoFactory`):**
    - **Tipo:** Criacional.
    - **Justificativa:** Centraliza e encapsula a instanciação de objetos `Produto`. Isola o restante do sistema da chamada direta ao operador `new`, facilitando extensões futuras na construção de produtos complexos.
@@ -115,6 +124,7 @@ Em estrito atendimento ao critério da disciplina (*mínimo de 2 padrões GRASP 
 ### 5.2. Padrões no Cadastro de Clientes
 
 #### Padrões GRASP:
+
 1. **Controller (`ClienteController`):**
    - **Justificativa:** Ponto de entrada das requisições de clientes originadas da interface. Intermedia o fluxo entre a UI e a lógica de negócio do `ClienteService`, preservando a independência da apresentação.
 2. **Information Expert (`Cliente.dadosValidos()`):**
@@ -123,6 +133,7 @@ Em estrito atendimento ao critério da disciplina (*mínimo de 2 padrões GRASP 
    - O `ClienteRepository` encapsula e gerencia a coleção de instâncias de `Cliente`, preservando o princípio de baixo acoplamento e separação de responsabilidades.
 
 #### Padrões GoF:
+
 1. **Simple Factory / Factory (`ClienteFactory`):**
    - **Tipo:** Criacional.
    - **Justificativa:** Padroniza a criação de instâncias de `Cliente`, garantindo que todas as criações ocorram por meio de um ponto único e controlado.
@@ -135,6 +146,7 @@ Em estrito atendimento ao critério da disciplina (*mínimo de 2 padrões GRASP 
 ## 6. Arquitetura e Estrutura de Pacotes
 
 O código está estruturado em pacotes coesos:
+
 ```
 model/src/
 ├── Main.java                          # Interface de console, menu interativo e modo demo
@@ -167,16 +179,19 @@ model/src/
 ## 7. Instruções para Compilação e Execução
 
 ### Compilação:
+
 ```bash
 javac -d model/out/production/model $(find model/src -name "*.java")
 ```
 
 ### Execução em Modo Interativo (Navegação pelos Menus):
+
 ```bash
 java -cp model/out/production/model Main
 ```
 
-### Execução em Modo Demonstração (Exibe todas as operações para prints do AVA):
+### Execução em Modo Demonstração:
+
 ```bash
 java -cp model/out/production/model Main --demo
 ```
