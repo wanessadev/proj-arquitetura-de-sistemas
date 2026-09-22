@@ -66,6 +66,24 @@ Permite o gerenciamento dos clientes para contato e programas de fidelização.
   - **UPDATE:** Atualização cadastral (nome, telefone e e-mail).
   - **DELETE:** Descadastramento de clientes pelo ID.
   - **Simulação de Fidelidade:** Aplicação de regras de fidelidade via Strategy.
+ 
+### 3.3. Cadastro 3: Ingredientes
+
+Permite o controle de estoques e insumos utilizados na fábrica dos doces.
+
+- **Atributos:**
+-  - `id` (Identificador numérico único)
+  - `nome` (Nome do insumo/Ingrediente)
+  - `categoria` (Classificação do insumo, ex: Laticínios, Secos, Chocolates)
+  - `quantidade` (Quantidade disponível em estoque)
+  - `unidadeMedia` (Unidade de medida, ex: unidades, kg, g, ml)
+
+ - **Operações:**
+  - **CREATE:** Registro de novos ingredientes com validação de dados.
+  - **READ:** Listagem geral do estoque e consulta pontual por ID.
+  - **UPDATE:** Alteração de dados (nome, categoria, quantidade e unidade de medida).
+  - **DELETE:** Remoção de insumos do sistema pelo ID.
+  - **Simulação de Fidelidade:** Atualização e verificação contínua dos níveis de insumos em estoque.
 
 ---
 
@@ -83,6 +101,11 @@ Permite o gerenciamento dos clientes para contato e programas de fidelização.
 - **RF08:** O sistema deve permitir buscar um cliente pelo seu ID.
 - **RF09:** O sistema deve permitir atualizar os dados de um cliente existente.
 - **RF10:** O sistema deve permitir excluir um cliente por ID.
+- **RF11:** O sistema deve permitir cadastrar um ingrediente.
+- **RF12:** O sistema deve perimitir listar todos os ingredientes cadastrados.
+- **RF13:** O sistema deve permitir buscar um ingrediente pelo seu ID.
+- **RF14:** O sistema deve permitir atualizar os dados de um ingrediente existente.
+- **RF15:** O sistema deve permitir excluir um ingrediente por ID.
 
 ### 4.2. Regras de Negócio (RN)
 
@@ -92,6 +115,9 @@ Permite o gerenciamento dos clientes para contato e programas de fidelização.
 - **RN04:** Cada cliente deve possuir um ID único no sistema.
 - **RN05:** O nome do cliente não pode ser nulo ou vazio.
 - **RN06:** O telefone do cliente não pode ser nulo ou vazio.
+- **RN07:** Cada ingrediente deve possuir um ID único no sistema.
+- **RN08:** O nome do ingrediente não pode ser nulo ou vazio.
+- **RN09:** A quantidade do ingrediente não pode ser negativa( deve ser maior ou igual a zero).
 
 ---
 
