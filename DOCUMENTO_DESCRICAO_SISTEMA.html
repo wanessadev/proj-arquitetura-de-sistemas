@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Documento de Descrição do Sistema - Doces Tia Bita</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 18mm 18mm 18mm;
+    }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      line-height: 1.45;
+      color: #2c3e50;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 20px;
+    }
+    .header {
+      border-bottom: 2px solid #b76e79;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+    }
+    .header h1 {
+      margin: 0 0 6px 0;
+      color: #b76e79;
+      font-size: 20pt;
+    }
+    .header .subtitle {
+      font-size: 11pt;
+      color: #555;
+      margin: 2px 0;
+    }
+    .meta-box {
+      background: #fdf6f7;
+      border-left: 4px solid #b76e79;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      font-size: 10pt;
+    }
+    h2 {
+      color: #34495e;
+      font-size: 13pt;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 4px;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+    h3 {
+      color: #5d6d7e;
+      font-size: 11pt;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    p, li {
+      font-size: 10pt;
+      text-align: justify;
+    }
+    ul {
+      margin-top: 4px;
+      margin-bottom: 8px;
+      padding-left: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 16px 0;
+      font-size: 9.5pt;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 7px 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f7e6e9;
+      color: #7a3b45;
+      font-weight: 600;
+    }
+    tr:nth-child(even) {
+      background-color: #fbfbfb;
+    }
+    code {
+      font-family: Consolas, monospace;
+      background: #f4f4f4;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-size: 9pt;
+      color: #9c27b0;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      font-size: 8pt;
+      font-weight: bold;
+      border-radius: 4px;
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>🍰 Doces Tia Bita — Sistema de Gerenciamento</h1>
+    <div class="subtitle"><strong>Disciplina:</strong> Projeto e Arquitetura de Sistemas (AV1) — Universidade de Fortaleza (UNIFOR)</div>
+    <div class="subtitle"><strong>Docente:</strong> Prof. Américo Sampaio</div>
+  </div>
+
+  <div class="meta-box">
+    <strong>Equipe:</strong> Wanessa Vieira & Luís Guilherme &nbsp;|&nbsp; 
+    <strong>Repositório:</strong> <a href="https://github.com/wanessadev/proj-arquitetura-de-sistemas">wanessadev/proj-arquitetura-de-sistemas</a> &nbsp;|&nbsp; 
+    <strong>Linguagem:</strong> Java 21 (OO)
+  </div>
+
+  <h2>1. Propósito do Sistema</h2>
+  <p>
+    O <strong>Doces Tia Bita — Sistema de Gerenciamento</strong> é uma solução de software desenvolvida para automatizar e organizar as rotinas operacionais básicas de uma confeitaria artesanal. O sistema centraliza a administração do cardápio de produtos e o cadastro de clientes, fornecendo operações completas de CRUD (criação, leitura/busca, atualização e exclusão). Além de manter a integridade dos dados por meio de regras de negócio bem definidas, a arquitetura foi desenhada com alto rigor acadêmico, aplicando padrões consolidados da Engenharia de Software (GoF e GRASP) para garantir manutenibilidade, extensibilidade e baixo acoplamento.
+  </p>
+
+  <h2>2. Usuário do Sistema</h2>
+  <p>
+    Visando manter o foco na arquitetura sem elevar a complexidade de autenticação, o sistema adota um perfil centralizado de usuário:
+  </p>
+  <ul>
+    <li><strong>Administrador / Gestor da Confeitaria:</strong> Responsável por gerenciar os produtos (cadastrar doces, atualizar preços e sabores, aplicar descontos promocionais) e clientes (manter contatos atualizados e consultar benefícios em compras).</li>
+  </ul>
+
+  <h2>3. Principais Funcionalidades (Cadastros CRUD)</h2>
+
+  <h3>3.1. Cadastro de Produtos</h3>
+  <ul>
+    <li><strong>Atributos:</strong> ID (int), Nome (String), Categoria (String), Sabor (String), Preço (double).</li>
+    <li><strong>Operações:</strong> Cadastrar produto, listar todos, buscar por ID, atualizar dados, excluir produto e calcular preço promocional (via Strategy).</li>
+  </ul>
+
+  <h3>3.2. Cadastro de Clientes</h3>
+  <ul>
+    <li><strong>Atributos:</strong> ID (int), Nome (String), Telefone (String), E-mail (String).</li>
+    <li><strong>Operações:</strong> Cadastrar cliente, listar todos, buscar por ID, atualizar dados, excluir cliente e simular desconto fidelidade (via Strategy).</li>
+  </ul>
+
+  <h2>4. Requisitos Funcionais e Regras de Negócio</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 50%;">Requisitos Funcionais (RF)</th>
+        <th style="width: 50%;">Regras de Negócio (RN)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          • <strong>RF01 - RF05:</strong> Cadastro, listagem, busca por ID, atualização e exclusão de produtos.<br>
+          • <strong>RF06 - RF10:</strong> Cadastro, listagem, busca por ID, atualização e exclusão de clientes.
+        </td>
+        <td>
+          • <strong>RN01 / RN04:</strong> Cada produto e cliente deve ter ID único.<br>
+          • <strong>RN02 / RN05:</strong> Nome do produto e do cliente não podem ser vazios.<br>
+          • <strong>RN03:</strong> Preço do produto deve ser maior que zero.<br>
+          • <strong>RN06:</strong> Telefone do cliente é de preenchimento obrigatório.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <h2>5. Padrões de Projeto Utilizados (GoF e GRASP)</h2>
+  <p>
+    Em total conformidade com as diretrizes do trabalho (<em>mínimo de 2 padrões GRASP e 2 GoF por cadastro</em>), detalham-se a seguir os padrões aplicados:
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Cadastro</th>
+        <th>Padrões GRASP Aplicados</th>
+        <th>Padrões GoF Aplicados</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Produtos</strong></td>
+        <td>
+          <strong>1. Controller:</strong> <code>ProdutoController</code> recebe as ações da interface e delega a execução para o serviço, desacoplando a UI do modelo.<br>
+          <strong>2. Information Expert:</strong> <code>Produto.dadosValidos()</code> valida nome e preço por ser o detentor dos dados.
+        </td>
+        <td>
+          <strong>1. Factory (Criacional):</strong> <code>ProdutoFactory</code> encapsula a instanciação do objeto Produto.<br>
+          <strong>2. Strategy (Comportamental):</strong> <code>PrecoStrategy</code> (com <code>PrecoNormalStrategy</code> e <code>PrecoPromocionalStrategy</code>) flexibiliza a precificação.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>2. Clientes</strong></td>
+        <td>
+          <strong>1. Controller:</strong> <code>ClienteController</code> orquestra as solicitações de clientes entre a apresentação e o <code>ClienteService</code>.<br>
+          <strong>2. Information Expert:</strong> <code>Cliente.dadosValidos()</code> valida a consistência de nome e telefone na própria entidade.
+        </td>
+        <td>
+          <strong>1. Factory (Criacional):</strong> <code>ClienteFactory</code> centraliza a criação e padroniza novas instâncias de Cliente.<br>
+          <strong>2. Strategy (Comportamental):</strong> <code>DescontoClienteStrategy</code> (com <code>ClienteComumStrategy</code> e <code>ClienteFidelidadeStrategy</code>) varia as regras de benefício.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>6. Estrutura Arquitetural do Projeto</h2>
+  <p>
+    O sistema foi organizado em camadas concisas, respeitando o princípio de <strong>Alta Coesão e Baixo Acoplamento</strong>:
+  </p>
+  <ul>
+    <li><code>model</code>: Classes de entidade de domínio (<code>Produto</code>, <code>Cliente</code>).</li>
+    <li><code>factory</code>: Fábricas para instanciação padronizada (<code>ProdutoFactory</code>, <code>ClienteFactory</code>).</li>
+    <li><code>strategy</code>: Interfaces e implementações intercambiáveis de precificação e fidelidade.</li>
+    <li><code>repository</code>: Camada de persistência em memória gerenciando as listas de entidades.</li>
+    <li><code>service</code>: Camada de serviço responsável por garantir as validações e regras de negócio (RN01 a RN06).</li>
+    <li><code>controller</code>: Camada controladora que atende às interações da camada de visão.</li>
+    <li><code>Main.java</code>: Ponto de entrada com menu em console e rotina de demonstração automatizada.</li>
+  </ul>
+
+  <h2>7. Execução e Evidências</h2>
+  <p>
+    Para execução e geração dos prints das telas exigidos pelo professor, o sistema oferece dois modos via terminal:
+  </p>
+  <ul>
+    <li><strong>Modo Interativo:</strong> <code>java -cp model/out/production/model Main</code> (menu interativo com opções de CRUD).</li>
+    <li><strong>Modo Demonstração:</strong> <code>java -cp model/out/production/model Main --demo</code> (executa todos os passos dos dois CRUDs em sequência para captura rápida de prints).</li>
+  </ul>
+
+</body>
+</html>
