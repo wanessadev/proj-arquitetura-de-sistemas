@@ -191,8 +191,6 @@ Em estrito atendimento ao critério da disciplina (*mínimo de 2 padrões GRASP 
 O código está estruturado em pacotes coesos:
 
 ```
-```text
-src/
 ├── Main.java                          # Interface de console, menu interativo e modo demo
 ├── model/
 │   ├── Produto.java                   # Entidade de Produto (Information Expert)
