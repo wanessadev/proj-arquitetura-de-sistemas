@@ -72,7 +72,7 @@ Permite o gerenciamento dos clientes para contato e programas de fidelização.
 Permite o controle de estoques e insumos utilizados na fábrica dos doces.
 
 - **Atributos:**
--  - `id` (Identificador numérico único)
+  - `id` (Identificador numérico único)
   - `nome` (Nome do insumo/Ingrediente)
   - `categoria` (Classificação do insumo, ex: Laticínios, Secos, Chocolates)
   - `quantidade` (Quantidade disponível em estoque)
