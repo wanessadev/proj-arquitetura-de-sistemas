@@ -130,6 +130,23 @@ Em estrito atendimento ao critério da disciplina (*mínimo de 2 padrões GRASP 
    - **Tipo:** Comportamental.
    - **Justificativa:** Permite variar a estratégia de concessão de descontos e benefícios conforme o perfil do cliente (ex: cliente regular sem desconto vs. cliente cadastrado no programa de fidelidade com percentual de abatimento), sem necessidade de instruções condicionais complexas (`if/else`) espalhadas pelo código.
 
+### 5.3. Padrões no Cadastro de Ingredientes
+
+#### Padrões GRASP:
+1. **Controller(`IngredienteService`):**
+  - **Justificativa:** Atua como o ponto focal para tratar as regras de negócio e coordenar as requisições do sistema antes de repassá-las na camada de dados.
+2. **Creator(`IngredienteService`)**
+  - **Justificativa:** Assume a responsabilidade de instanciar objetos da classe Ingrediente, pois ela possui informações necessárias para validar e registrar novos elementos.
+
+#### Padrões GoF:
+1. **Repository Pattern / Padrão Estrutural (`IngredienteRepository`):**
+   - **Tipo:** Estrutural.
+   - **Justificativa:** Encapsula a lógica de acesso e manipulação dos dados da coleção na classe `IngredienteRepository`, isolando o restante da aplicação dos detalhes de armazenamento.
+
+2. **Dependency Injection / Injeção de Dependencia (`IngredienteRepository`):**
+   - **Tipo:** Dependencia.
+   - **Justificativa:** A dependencia de `IngredienteRepository` é passada pelo construtor em `IngredienteService` reduzindo o acoplamento entre os componentes e facilitando testes únitários.
+
 ---
 
 ## 6. Arquitetura e Estrutura de Pacotes
